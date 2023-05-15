@@ -1,0 +1,62 @@
+<!-- result.html -->
+<!doctype html>
+<html>
+<head>
+    <title>Result</title>
+    <style>
+    p{
+    text-align;center;
+    }
+    </style>
+</head>
+<body bgcolor="#81CBBF">
+<div id ="p" style="text-align:centre;">
+<figure>
+     <figcaption style="display: block; margin: 0 auto; text-align: center;font-size:50px; margin: 25px;">Click to get processed images</figcaption>
+    <br>
+      <button onclick="showDialog()" style="display: block; margin: 0 auto;font-size: 30px;background-color: #008CBA;">Click</button>
+    <br>
+    <div id="dialog" class="dialog">
+      <img id="dialog-img" src="" style="display: block; margin: 0 auto;">
+         <div style="text-align: center;">
+      <button onclick="nextImage()" style="display: inline-block; margin-right: 10px;font-size: 30px;background-color: #4CAF50;">Next</button>
+      <button onclick="hideDialog()" style="display: inline-block;font-size: 30px;background-color: #E8990E;">Close</button>
+             </div>
+    </div>
+</figure>
+</div>
+<div id="new-content" style="display: none;">
+        <h1 style="text-align: center;">Result</h1>
+    <p style="text-align: center;">SSIM: {{ ssim_score }}</p>
+<!--    <img src={{image}} alt="Difference Image">-->
+    <p style="text-align: center;">Difference Image</p>
+    <img src="{{url_for('static', filename='diff.jpg')}}" width="450px" height="350px" style="display: block; margin: 0 auto;" align="Difference Image" />
+    {% if is_genuine %}
+        <p style="text-align: center;font-size:25px;color:#E219D6;">Currency is genuine.</p>
+    {% else %}
+        <p style="text-align: center;font-size:25px;color: #E219D6;">Currency is fake.</p>
+    {% endif %}
+        </div>
+    <script>
+      var images = ["static/test_selected_image.jpg", "static/test_noise_filtered.jpg", "static/test_gray_scale.jpg", "static/test_edge_detected.jpg", "static/test_segmented.jpg"];
+      var currentIndex = 0;
+      var imgElement = document.getElementById("dialog-img");
+
+      function showDialog() {
+        imgElement.src = images[currentIndex];
+        document.getElementById("dialog").style.display = "block";
+
+      }
+
+      function hideDialog() {
+        document.getElementById("p").style.display = "none";
+        document.getElementById("new-content").style.display = 'block';
+          }
+
+      function nextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        imgElement.src = images[currentIndex];
+      }
+    </script>
+</body>
+</html>
